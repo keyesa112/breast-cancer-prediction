@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hasil Diagnosa</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #c9d6ff 100%;
+            padding: 40px 20px;
+            margin: 0;
+        }
+
+        .result-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative Elements */
+        .result-container::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 100px;
+            height: 100px;
+            background: rgba(19, 99, 198, 0.1);
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            color: #1363C6;
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+
+        .result-section {
+            margin-bottom: 30px;
+        }
+
+        .result-section h2 {
+            color: #333333;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #1363C6;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .diagnosis-results ul {
+            list-style-type: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .diagnosis-results li {
+            background-color: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            color: #555555;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .diagnosis-results li strong {
+            margin-bottom: 5px;
+            color: #333333;
+            font-size: 1.1em;
+        }
+
+        .best-model {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .best-model h3 {
+            font-size: 1.3em;
+            color: #1363C6;
+            margin-bottom: 10px;
+        }
+
+        .best-prediction {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin: 20px 0;
+            color: #1363C6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .best-prediction.positif {
+            color: #D9534F;
+        }
+
+        .best-prediction.negatif {
+            color: #5CB85C;
+        }
+
+        .best-prediction i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .user-details {
+            margin-top: 30px;
+        }
+
+        .user-details h2 {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #333333;
+        }
+
+        .user-details ul {
+            list-style-type: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .user-details li {
+            background-color: #f0f0f0;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            color: #555555;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-details li strong {
+            margin-bottom: 5px;
+            color: #333333;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            background-color: #1363C6;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.3s;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background-color: #0d4ba0;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .diagnosis-results ul {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .diagnosis-results ul {
+                grid-template-columns: 1fr;
+            }
+
+            .result-container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .result-section h2 {
+                font-size: 1.3em;
+            }
+
+            .diagnosis-results li {
+                padding: 10px 15px;
+            }
+
+            .best-prediction {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="result-container">
+        <h1>Hasil Diagnosa</h1>
+
+        <!-- Section for Predictions -->
+        {% if predictions %}
+            <div class="result-section">
+                <h2>Hasil Prediksi Model</h2>
+                <div class="diagnosis-results">
+                    <ul>
+                        {% for model_name, prediction in predictions.items() %}
+                        <li>
+                            <strong>{{ model_name }}</strong>
+                            {% if prediction == 0 %}
+                                <span class="negatif"><i class="fas fa-times-circle"></i> Sehat</span>
+                            {% elif prediction == 1 %}
+                                <span class="positif"><i class="fas fa-check-circle"></i> Kanker</span>
+                            {% else %}
+                                <span>Data Tidak Valid</span>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section for Best Model -->
+            <div class="best-model">
+                <h3>Model Terbaik: {{ best_model_name }}</h3>
+                <div class="best-prediction {{ 'positif' if best_prediction == 1 else 'negatif' }}">
+                    {% if best_prediction == 0 %}
+                        <i class="fas fa-times-circle"></i> Negatif Kanker Payudara
+                    {% elif best_prediction == 1 %}
+                        <i class="fas fa-check-circle"></i> Positif Kanker Payudara
+                    {% else %}
+                        <i class="fas fa-exclamation-circle"></i> Data Tidak Valid
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Section for User Input Details -->
+        <div class="user-details">
+            <h2>Data Input Anda:</h2>
+            <ul>
+                <li>
+                    <strong>Age</strong>
+                    {{ data['Age'] }}
+                </li>
+                <li>
+                    <strong>BMI</strong>
+                    {{ data['BMI'] }}
+                </li>
+                <li>
+                    <strong>Glucose</strong>
+                    {{ data['Glucose'] }}
+                </li>
+                <li>
+                    <strong>Insulin</strong>
+                    {{ data['Insulin'] }}
+                </li>
+                <li>
+                    <strong>HOMA</strong>
+                    {{ data['HOMA'] }}
+                </li>
+                <li>
+                    <strong>Leptin</strong>
+                    {{ data['Leptin'] }}
+                </li>
+                <li>
+                    <strong>Adiponectin</strong>
+                    {{ data['Adiponectin'] }}
+                </li>
+                <li>
+                    <strong>Resistin</strong>
+                    {{ data['Resistin'] }}
+                </li>
+                <li>
+                    <strong>MCP.1</strong>
+                    {{ data['MCP.1'] }}
+                </li>
+            </ul>
+        </div>
+
+        <!-- Button to Go Back -->
+        <div class="btn-container">
+            <a href="{{ url_for('diagnose') }}" class="btn">Kembali</a>
+        </div>
+    </div>
+</body>
+
+</html>

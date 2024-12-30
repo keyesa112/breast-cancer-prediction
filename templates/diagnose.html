@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>AI.Health - Artificial Intelligence Breast Detection</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Breast cancer detection, AI healthcare, medical technology" name="keywords">
+    <meta content="AI.Health is dedicated to providing accurate and efficient breast cancer detection using advanced AI technologies." name="description">
+
+    <!-- Favicon -->
+    <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Ubuntu:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{{ url_for('static', filename='lib/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #f9f9f9; /* Slight background color for contrast */
+        }
+
+        .hero-header {
+            height: 50vh; /* Full screen hero section */
+        }
+
+        .formbold-main-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px;
+        }
+
+        .formbold-form-wrapper {
+            margin: 0 auto;
+            max-width: 550px;
+            width: 100%;
+            background: white;
+            padding: 20px;
+            border-radius: 8px; /* Rounded corners for the form */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            color: #07074D;
+            font-weight: 500;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #DDE3EC;
+            border-radius: 4px; /* Rounded corners for input fields */
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #07074D;
+        }
+
+        input[type="submit"] {
+            font-size: 16px;
+            border-radius: 5px;
+            padding: 12px 25px;
+            border: none;
+            font-weight: 500;
+            background-color: #1363C6;
+            color: white;
+            cursor: pointer;
+            display: block;
+            width: 100%; /* Full width for button */
+            margin-top: 20px;
+        }
+
+        input[type="submit"]:hover {
+            box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .result {
+            margin-top: 20px; /* Adjust margin for better spacing */
+        }
+
+        .result h2 {
+            margin-bottom: 10px;
+        }
+
+        .result ul {
+            list-style-type: none;
+            padding: 0; /* Remove padding */
+        }
+
+        .result li {
+            background: #e9ecef;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 4px; /* Rounded corners for results */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <div class="container-fluid sticky-top">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark p-0">
+                <a href="index.html" class="navbar-brand">
+                    <h1 class="text-white">AI<span class="text-dark">.</span>Health</h1>
+                </a>
+                <button type="button" class="navbar-toggler ms-auto me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto">
+                        <a href="{{ url_for('index') }}" class="nav-item nav-link active">Home</a>
+                        <a href="{{ url_for('about') }}" class="nav-item nav-link">About</a>
+                        <a href="{{ url_for('diagnose') }}" class="nav-item nav-link">Diagnose</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Hero Start -->
+    <div class="container-fluid pt-5 bg-primary hero-header">
+        <div class="container pt-5">
+            <div class="row g-5 pt-5">
+                <div class="col-lg-6 align-self-center text-center text-lg-start mb-lg-5">
+                    <h1 class="display-4 text-white mb-4 animated slideInRight">Diagnose</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center justify-content-lg-start mb-0">
+                            <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
+                            <li class="breadcrumb-item text-white active" aria-current="page">Diagnose</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-lg-6 align-self-end text-center text-lg-end">
+                    <!-- Optional Image or Content -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero End -->
+
+    <div class="formbold-main-wrapper">
+        <div class="formbold-form-wrapper">
+            <h1>Klasifikasi Kanker Payudara</h1>
+            <p> Fill in the labels according to your health data </p>
+            <form method="POST">
+                <label for="age">Age:</label>
+                <input type="text" name="Age" required>
+            
+                <label for="bmi">BMI:</label>
+                <input type="text" name="BMI" required>
+            
+                <label for="glucose">Glucose:</label>
+                <input type="text" name="Glucose" required>
+            
+                <label for="insulin">Insulin:</label>
+                <input type="text" name="Insulin" required>
+            
+                <label for="homa">HOMA:</label>
+                <input type="text" name="HOMA" required>
+            
+                <label for="leptin">Leptin:</label>
+                <input type="text" name="Leptin" required>
+            
+                <label for="adiponectin">Adiponectin:</label>
+                <input type="text" name="Adiponectin" required>
+            
+                <label for="resistin">Resistin:</label>
+                <input type="text" name="Resistin" required>
+            
+                <label for="mcp1">MCP.1:</label>
+                <input type="text" name="MCP.1" required>
+            
+                <input type="submit" value="Diagnose">
+            </form>
+            
+
+            <!-- {% if predictions %}
+            <div class="result">
+                <h2>Diagnosis Results:</h2>
+                <ul>
+                    {% for model_name, prediction in predictions.items() %}
+                    <li>
+                        {{ model_name }}: 
+                        {% if prediction == 0 %}
+                        Sehat
+                        {% elif prediction == 1 %}
+                        Kanker
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                <h3>Best Model: {{ best_model_name }}</h3>
+                <h4>Best Prediction: 
+                    {% if best_prediction == 0 %}
+                    Sehat
+                    {% elif best_prediction == 1 %}
+                    Kanker
+                    {% endif %}
+                </h4>
+            </div>
+            {% endif %}             -->
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="{{ url_for('static', filename='lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+</body>
+
+</html>
